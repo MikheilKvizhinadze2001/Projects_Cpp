@@ -6,11 +6,10 @@
 #include <vector>
 
 class Student{
-private:
-float GPA;
-int student_ID;
 
 public:
+    float GPA;
+    static int student_ID;
     friend class User;
     friend class Math_teacher;
     friend class English_teacher;
@@ -20,7 +19,6 @@ public:
     float math_grade;
 
     Student(std::string name,int age);
-
 };
 
 
@@ -41,7 +39,7 @@ public:
     void view_student_database();
     int checkUsername(const std::string& enteredUsername);
     bool checkPassword(const std::string& enteredPassword);
-    void save_students(const std::vector<Student> &students);
+
 
 };
 
@@ -51,6 +49,7 @@ class Principal : public User {
 
 public:
     Principal(std::string username, std::string password);
+    void create_student_database(const std::vector<Student> &students);
 
 
 };
