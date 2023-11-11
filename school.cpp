@@ -7,13 +7,17 @@
 #include <fstream>
 #include <string>
 
+
+
 Student::Student(std::string name,int age):name(std::move(name)),age(age){
-    student_ID = 0;
     GPA = -1;
     math_grade = -1.f;
     english_grade = -1.f;
 
+    //Id will be random number
+    student_ID++;
 }
+int Student::student_ID=0;
 
 
 
@@ -42,48 +46,63 @@ int User::checkUsername(const std::string& enteredUsername){
 }
 
 
-void User::save_students(const std::vector<Student> &students) {
+void Principal::create_student_database(const std::vector<Student> &students) {
+
 
     std::ofstream file("student_data.txt");
+    file << std::left << std::setw(15) << "ID" <<  std::left << std::setw(15) <<  "Name" <<  std::left << std::setw(15) << "Math grade" <<  std::left << std::setw(15) << "English grade"
+         <<  std::left << std::setw(15) << "GPA" << "\n";
 
 
-    file << std::left << std::setw(15) << "Student ID" << std::setw(15) << "Name" <<
-    std::setw(15) << "Math grade" << std::setw(15) << "English Grade" << std::setw(15) << "GPA";
+    file << std::flush;  // Flush the buffer
 
-    std::cout<<std::endl;
 
     for (const Student& student : students){
 
+
         if (student.english_grade!=-1 and student.math_grade !=-1) {
-            file << std::left << std::setw(15) << student.student_ID << std::setw(15) << student.name << std::setw(15)<<
-                 student.math_grade << std::setw(15) << student.english_grade << std::setw(15) << "NA";
+            file << std::left << std::setw(15) << student.student_ID << std::left << std::setw(15) << student.name <<std::left <<
+            std::setw(15)<<
+            student.math_grade << std::left <<std::setw(15) << student.english_grade <<std::left << std::setw(15) << "NA";
+
             std::cout<<std::endl;
         }
 
         else if (student.english_grade==-1 and student.math_grade !=-1) {
 
-            file << std::left << std::setw(15) << student.student_ID << std::setw(15) << student.name << std::setw(15)<<
-            student.math_grade << std::setw(15) << "NA" << std::setw(15) << "NA";
+            file << std::left << std::setw(15) << student.student_ID << std::left <<std::setw(15) << student.name <<std::left << std::setw(15)<<
+            student.math_grade <<std::left <<std::setw(15) << "NA" << std::left << std::setw(15) << "NA";
+
             std::cout<<std::endl;
         }
 
         else if (student.math_grade==-1 and student.english_grade!=-1) {
 
-            file << std::left << std::setw(15) << student.student_ID << std::setw(15) << student.name << std::setw(15)<<
-            "NA" << std::setw(15) << student.english_grade << std::setw(15) << "NA";
+            file << std::left << std::setw(15) << student.student_ID <<std::left << std::setw(15) << student.name <<std::left << std::setw(15)<<
+            "NA" << std::left <<std::setw(15) << student.english_grade << std::left <<std::setw(15) << "NA";
+
             std::cout<<std::endl;
 
         }
         else {
-            file << std::left << std::setw(15) << student.student_ID << std::setw(15) << student.name << std::setw(15)<<
-            "NA" << std::setw(15) << "NA" << std::setw(15) << "NA";
+            file << std::left << std::setw(15) << student.student_ID <<std::left << std::setw(15)
+            <<student.name <<std::left << std::setw(15)<<
+            "NA" << std::left <<std::setw(15) << "NA" << std::left <<std::setw(15) << "NA";
+
             std::cout<<std::endl;
         }
 
     }
     file.close();
-}
 
+    /*
+  for (const Student& student : students) {
+      file << std::left << std::setw(15) << student.student_ID <<  std::left << std::setw(15) << student.name
+           <<  std::left << std::setw(15) << student.math_grade <<  std::left << std::setw(15) << student.english_grade
+           <<  std::left << std::setw(15) << student.GPA << "\n";
+      file << std::flush;  // Flush the buffer
+  }*/
+}
 
 
     bool User::checkPassword(const std::string& enteredPassword) {
@@ -117,11 +136,17 @@ void User::save_students(const std::vector<Student> &students) {
 
 void User::view_student_database() {
 
-
+    std::ifstream file("student_data.txt");
+    std::string line;
+    while (std::getline(file, line)) {
+        std::cout << line << std::endl;
+    }
+    file.close();
 }
 
 
 Principal:: Principal(std::string username, std::string password) : User(username, password){}
+
 
 
 
