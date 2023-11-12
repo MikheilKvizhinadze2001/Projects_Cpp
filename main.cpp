@@ -1,14 +1,18 @@
 #include <iostream>
 #include "school.h"
 #include <conio.h>
-#include <cstdlib>   //for random number
 #include <iomanip>
-#include <chrono>
+
 
 
 int main() {
 
+    //Creating dummy database
+    Student student1("John");
+    Student student2("Jane");
+    Student student3("Zaza");
 
+    std::vector<Student> students = {student1, student2, student3};
 
         std::map<std::string, User *> users;
 
@@ -20,18 +24,21 @@ int main() {
         char exit_button;
 
 
-        std::cout << "Hello, welcome to school management system, \n"
-                     "to exit the system, press \"1\", otherwise press \"2\"" << std::endl;
-        std::cin >> exit_button;
-        std::cout << std::endl;
-        int check_initial_input = 0;
+        users["principal"]->create_student_database(students);  //Creating initial database from students declared above
 
-
+        
         while (true) {
-
+            std::cout << "Hello, welcome to school management system! \n"
+                         "To exit the system, press \"1\", otherwise press \"2\"" << std::endl;
+            std::cin >> exit_button;
+            std::cout << std::endl;
+            int check_initial_input = 0;
 
             if (exit_button == '1') {
-                std::cout << "Session has ended!" << std::endl;
+                std::cout << "Session has ended! System is turning off\n\n\n" << std::endl;
+                delete users["principal"];
+                delete users["english_teacher"];
+                delete users["math_teacher"];
                 return 0;
             } else if (exit_button == '2') {
 
@@ -75,8 +82,8 @@ int main() {
                 for (int i = 0; i < 15; i++)
                     std::cout << std::endl;
 
-                std::cout << "Welcome back \n" << username << std::endl;
-                std::cout << "Enter password: or press \"1\" to quit \n" << std::endl;
+                std::cout << "Welcome back " << username << std::endl;
+                std::cout << "Enter password or press \"1\" to go back to menu \n" << std::endl;
                 std::cin >> password;
 
 
@@ -91,7 +98,7 @@ int main() {
 
                     if (password == "1") {
                         std::cout << "Session has ended!" << std::endl;
-                        return 0;
+                        continue;   //Jump to top, where menu starts
                     }
 
 
@@ -105,8 +112,6 @@ int main() {
                     }
 
                 } while (true);
-
-                break;
 
             }
 
@@ -127,45 +132,164 @@ int main() {
             }
 
 
-        }
-
-        //shift previous console messages
-        for (int i = 0; i < 15; i++)
-            std::cout << std::endl;
-
-        char b; // character for successful login inputs
-
-        std::cout << "Login successful!" << std::endl;
 
 
-        if (username == "principal") {
+            //shift previous console messages
+            for (int i = 0; i < 15; i++)
+                std::cout << std::endl;
 
-            auto *principal = new Principal("principal", "12345");
+            char b; //  successful login inputs
 
-            std::cout << "Welcome back " << users[username]->username << std::endl;
+            std::cout << "Login successful!" << std::endl;
 
-            std::cout << R"(press "1" to quit, press "2" to create student database,
- press "3" to view database)" << std::endl;
-            std::cin >> b;
-            if (b == '1') {
-                std::cout << "Session has ended!" << std::endl;
-                return 0;
-            } else if (b == '2') {
 
-                //Creating student database
 
-                Student student1("John", 15);
-                Student student2("Jane", 16);
+            if (username == "principal") {
+                while (true) {
+                    auto *principal = new Principal("principal", "12345");
 
-                std::vector<Student> students = {student1, student2};
+                    std::cout << "Welcome to the school management system " << users[username]->username << std::endl;
 
-                principal->create_student_database(students);
-            } else if (b == '3') {
+                    std::cout << R"(press "1" to quit, press "2" to add student to database, press "3" to view database)" << std::endl;
 
+                    std::cin >> b;
+                    if (b == '1') {
+                        std::cout << "Session has ended!\n\n\n" << std::endl;
+                        break;
+                    } else if (b == '2') {
+                        std::string new_student_name;
+                        std::cout<<"Please write student's name, so he/she can be added to the database\n";
+                        std::cin>>new_student_name;
+                        principal->add_student(students,new_student_name);
+                        principal->create_student_database(students);
+                        std::cout << std::endl;
+                        std::cout << "\nStudent has been added, viewing changed database and returning to menu\n\n"<< std::endl;
+                        Principal::view_student_database();
+                        std::cout<<std::endl;
+                        continue;
+
+                    } else if (b == '3') {
+                        std::cout << "Viewing database\n" << std::endl;
+                        Principal::view_student_database();
+                        std::cout << std::endl;
+
+                    }
+                }
+            } else if (username == "math_teacher") {
+
+                while (true) {
+                    auto *math_teacher = new Math_teacher("math_teacher", "123");
+
+                    std::cout << "Welcome to the school management system " << users[username]->username << std::endl;
+
+                    std::cout << R"(press "1" to quit, press "2" to insert/change math grade, press "3" to view database)" << std::endl;
+
+                    std::cin >> b;
+
+                    if (b == '1') {
+                        std::cout << "Session has ended!\n\n\n" << std::endl;
+                        delete math_teacher;
+                        break;
+                    }
+
+                    if (b == '3') {
+                        std::cout << "Viewing database:\n";
+                        math_teacher->view_student_database();
+                        std::cout << std::endl;
+                        std::cout << "Returning to menu\n";
+                        continue;
+                    } else if (b == '2') {
+                        std::cout << std::endl;
+                        std::cout<< "Which student's grade would you like to update/change? Please key-in corresponding ID" << std::endl;
+
+                        int ID;
+                        float changed_grade;
+
+                        std::cin >> ID;
+
+                        std::cout << "Now, please key in grade: " << std::endl;
+                        std::cin >> changed_grade;
+
+                        int result = math_teacher->change_math_grade(students, ID, changed_grade);
+
+                        if (result == -2) {
+                            std::cout << "\nNo matching ID, returning to menu\n\n";
+                            continue;
+                        } else if (result == 0) {
+                            std::cout << "Change aborted" << std::endl;
+                        } else if (result == 1) {
+                            std::cout << "\nChange is made, viewing changed database and returning to menu\n\n"
+                                      << std::endl;
+                            math_teacher->create_student_database(students);
+                            math_teacher->view_student_database();
+                            std::cout << std::endl << std::endl;
+                            continue;
+                        } else if (result == -1) {
+                            std::cout << "\nInvalid input, please input correct value. Returning to menu\n" << std::endl;
+                            continue;
+                        }
+                    }
+
+                }
+            } else if (username == "english_teacher") {
+
+                while (true) {
+                    auto *english_teacher = new English_teacher("english_teacher", "123");
+
+                    std::cout << "Welcome to the school management system " << users[username]->username << std::endl;
+
+                    std::cout << R"(press "1" to quit, press "2" to insert/change english grade, press "3" to view database)" << std::endl;
+
+                    std::cin >> b;
+
+                    if (b == '1') {
+                        std::cout << "Session has ended!\n\n\n" << std::endl;
+                        delete english_teacher;
+                        break;
+                    }
+
+                    if (b == '3') {
+                        std::cout << "Viewing database:\n";
+                        english_teacher->view_student_database();
+                        std::cout << std::endl;
+                        std::cout << "Returning to menu\n";
+                        continue;
+                    } else if (b == '2') {
+                        std::cout << std::endl;
+                        std::cout<< "Which student's grade would you like to update/change? Please key-in corresponding ID"<< std::endl;
+
+                        int ID;
+                        float changed_grade;
+
+                        std::cin >> ID;
+
+                        std::cout << "Now, please key in grade: " << std::endl;
+                        std::cin >> changed_grade;
+
+                        int result = english_teacher->change_english_grade(students, ID, changed_grade);
+
+                        std::cout<<"Result is:: \n"<<result;
+                        if (result == -2) {
+                            std::cout << "\nNo matching ID, returning to menu\n\n";
+                            continue;
+                        } else if (result == 0) {
+                            std::cout << "Change aborted" << std::endl;
+                        } else if (result == 1) {
+                            std::cout << "\nChange is made, viewing changed database and returning to menu\n"
+                                      << std::endl;
+                            english_teacher->create_student_database(students);
+                            english_teacher->view_student_database();
+                            std::cout << std::endl << std::endl;
+                            continue;
+                        } else if (result == -1) {
+                            std::cout << "\nInvalid input, please input correct value. Returning to menu\n" << std::endl;
+                            continue;
+                        }
+                    }
+
+                }
             }
         }
 
-
-        return 0;
     }
 
