@@ -9,16 +9,15 @@ class Student{
 
 public:
     float GPA;
-    static int student_ID;
+    int student_ID;
     friend class User;
     friend class Math_teacher;
     friend class English_teacher;
     const std::string name;
-    const int age;
     float english_grade;
     float math_grade;
 
-    Student(std::string name,int age);
+    explicit Student(std::string name);
 };
 
 
@@ -35,10 +34,10 @@ public:
     int faild_attempts_password;
     std::string username;
     User(std::string username, std::string password);
-    std::string getUsername() const;
-    void view_student_database();
+    static void view_student_database();
     int checkUsername(const std::string& enteredUsername);
     bool checkPassword(const std::string& enteredPassword);
+    void create_student_database(std::vector<Student> &students);
 
 
 };
@@ -49,8 +48,7 @@ class Principal : public User {
 
 public:
     Principal(std::string username, std::string password);
-    void create_student_database(const std::vector<Student> &students);
-
+    void add_student(std::vector<Student> &students,const std::string &name);
 
 };
 
@@ -59,8 +57,8 @@ public:
 class Math_teacher : public User{
 public:
     Math_teacher(std::string username,std::string password);
-
-
+    int change_math_grade (std::vector<Student> &students, const int ID, const float &changed_math_grade);
+    int change_math_grade_success(const char &verify);
 };
 
 
@@ -68,7 +66,10 @@ public:
 class English_teacher : public User{
 public:
     English_teacher(std::string username, std::string password);
-    void change_english_grade (std::vector<Student> &students);
+    int change_english_grade (std::vector<Student> &students, const int ID,const float &changed_english_grade);
+
+    int change_english_grade_success(const char &verify);
+
 };
 
 
