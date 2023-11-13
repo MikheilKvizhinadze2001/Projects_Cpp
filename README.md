@@ -12,5 +12,8 @@ This project is a console application. After running the compiled file, you will
 ## Contributing
 Contributions are welcome. Please feel free to fork the project and create a pull request with your changes.
 
+##Demo
+https://github.com/MikheilKvizhinadze2001/School_managament_system/assets/85734592/99b005e2-a6d5-4563-a18b-98fff8988aea
+
 ## License
 This project is licensed under the MIT License.
