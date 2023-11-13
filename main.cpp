@@ -374,7 +374,7 @@ int main() {
 
                         int result = English_teacher::change_english_grade(students, ID, changed_grade);
 
-                        std::cout<<"Result is:: \n"<<result;
+
                         if (result == -2) {
                             std::cout << "\nNo matching ID, returning to menu\n\n";
                             continue;
