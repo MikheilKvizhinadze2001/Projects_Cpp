@@ -1,3 +1,5 @@
+//Function declarations
+
 #ifndef SCHOOL_H
 #define SCHOOL_H
 #include <string>
@@ -30,15 +32,13 @@ private:
     std::chrono::system_clock::time_point lockout_time;
 
 public:
-    int failed_attempts_username;
-    int faild_attempts_password;
+    int failed_attempts_password;
     std::string username;
     User(std::string username, std::string password);
     static void view_student_database();
-    int checkUsername(const std::string& enteredUsername);
-    bool checkPassword(const std::string& enteredPassword);
-    void create_student_database(std::vector<Student> &students);
-
+    int check_username(const std::string& enteredUsername) const;
+    bool check_password(const std::string& enteredPassword);
+    static void create_student_database(std::vector<Student> &students);
 
 };
 
@@ -48,8 +48,8 @@ class Principal : public User {
 
 public:
     Principal(std::string username, std::string password);
-    void add_student(std::vector<Student> &students,const std::string &name);
-
+    static void add_student(std::vector<Student> &students,const std::string &name);
+    static int check_student_name(std::string &string);
 };
 
 
@@ -57,8 +57,9 @@ public:
 class Math_teacher : public User{
 public:
     Math_teacher(std::string username,std::string password);
-    int change_math_grade (std::vector<Student> &students, const int ID, const float &changed_math_grade);
-    int change_math_grade_success(const char &verify);
+    static int change_math_grade (std::vector<Student> &students, int ID, const float &changed_math_grade);
+    static int change_math_grade_success(const std::string &verify);
+     bool check_ID(const std::string& ID);
 };
 
 
@@ -66,10 +67,10 @@ public:
 class English_teacher : public User{
 public:
     English_teacher(std::string username, std::string password);
-    int change_english_grade (std::vector<Student> &students, const int ID,const float &changed_english_grade);
+    static int change_english_grade (std::vector<Student> &students, int ID,const float &changed_english_grade);
 
-    int change_english_grade_success(const char &verify);
-
+    static int change_english_grade_success(const std::string &verify);
+    bool check_ID(const std::string& ID);
 };
 
 
