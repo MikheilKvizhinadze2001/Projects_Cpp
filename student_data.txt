@@ -1,0 +1,5 @@
+ID             Name           Math grade     English grade  GPA            
+41             John           NA             NA             NA             
+485            Jane           NA             NA             NA             
+340            Zaza           NA             NA             NA             
+526            Mikheil        29.79          97.21          63.5           
