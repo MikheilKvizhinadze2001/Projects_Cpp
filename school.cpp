@@ -34,8 +34,7 @@ failed_attempts(0),failed_attempts_password(0){}
 //***
 
 
-//This function checks username. If mapped username's username is same the value that actual user prompted
-//it will return true, otherwise it is false
+//This function checks username. If mapped object's username is same as the value prompted by user
 
 int User::check_username(const std::string& entered_username) const{
     if(entered_username != username){
@@ -49,7 +48,7 @@ int User::check_username(const std::string& entered_username) const{
 
 //Implement password checking functionality
 //Access will be blocked for 1 minute after entering three incorrect password
-//If you enter three incorrect passwords in a row, "faild_attempts_password" will increment to 2,
+//If user again enters three incorrect passwords, "faild_attempts_password" will increment to 2,
 //Prompting the program to terminate for security reasons
 //***
 bool User::check_password(const std::string& entered_password) {
