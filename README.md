@@ -13,7 +13,11 @@ This project is a console application. After running the compiled file, you will
 Contributions are welcome. Please feel free to fork the project and create a pull request with your changes.
 
 ## Demo
-https://github.com/MikheilKvizhinadze2001/School_managament_system/assets/85734592/99b005e2-a6d5-4563-a18b-98fff8988aea
+
+https://github.com/MikheilKvizhinadze2001/School_managament_system/assets/85734592/83696060-d657-4548-bb0e-021b3aeeb751
+
+
+
 
 
 
