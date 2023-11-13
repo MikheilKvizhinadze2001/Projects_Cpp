@@ -184,7 +184,7 @@ int Math_teacher::change_math_grade(std::vector<Student> &students, const int ID
 
     for (Student& student : students) {
         if (student.student_ID == ID) {
-            std::cout<<"You are about to change " << student.name <<"'s math grade, which is"
+            std::cout<<"You are about to change " << student.name <<"'s math grade, which is "
             <<student.math_grade<<" to "<<changed_math_grade<<std::endl;
             std::cout<<"Please verify change. Key-in 'y' or 'n':"<<std::endl;
             std::string verify;
@@ -259,7 +259,7 @@ int English_teacher::change_english_grade(std::vector<Student> &students, const 
 
     for (Student& student : students) {
         if (student.student_ID == ID) {
-            std::cout<<"You are about to change " << student.name <<"'s English grade, which is"
+            std::cout<<"You are about to change " << student.name <<"'s English grade, which is "
                      <<student.english_grade<<" to "<<changed_english_grade<<std::endl;
             std::cout<<"Please verify change. Key-in 'y' or 'n':"<<std::endl;
             std::string verify;
