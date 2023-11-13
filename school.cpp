@@ -20,7 +20,7 @@ Student::Student(std::string name):name(std::move(name)){
     math_grade = -1.f;
     english_grade = -1.f;
 
-    // Creating random value for ID, range is 0 to 100
+    // Creating random value for ID, range is 0 to 1000
     // Since the program is small, and number of students are assumed to be little, we can use rand() function to create
     // ID values for each student, as soon as Student's objects will be created
     int low = 0, high = 1000;
