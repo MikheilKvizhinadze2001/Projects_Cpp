@@ -1,6 +1,9 @@
 /*
  * Welcome to school management system project!
- * In the main function, mostly, user prompting is implemented.
+ * In the main function, mostly, user prompting is implemented. Dummy database is created and three users (Three different objects):
+ * Principal, math_teacher and english_teacher are created. Principal can view database and add students to the database.
+ * Teachers can view database and update/change students' grades for their respective course.
+ * Data is stored in a text file and retrieved from that file.
  * Explanations and comments are provided as we move forward
  */
 
@@ -204,7 +207,7 @@ int main() {
             }
 
             /*
-             *If the username is math teacher, program will prompt to press "1" to quit, "2" to change/insert math grade
+             *If the username is math teacher, we follow this branch. program will prompt to press "1" to quit, "2" to change/insert math grade
              * or press "3" to view database
              */
             else if (username == "math_teacher") {
@@ -358,6 +361,7 @@ int main() {
 
 
                         //Check if grade is valid. if yes, we convert it to float and call change_math_grade function
+                        //***
                         int dot_count = 0;
 
                         for (char c : changed_grade_string) {
@@ -373,7 +377,7 @@ int main() {
                         changed_grade = std::stof(changed_grade_string);
 
                         int result = English_teacher::change_english_grade(students, ID, changed_grade);
-
+                        //***
 
                         if (result == -2) {
                             std::cout << "\nNo matching ID, returning to menu\n\n";
@@ -399,6 +403,7 @@ int main() {
                         }
                     }
 
+                    //If "successful_login_input" was incorrect, we go back to menu
                     else {
                         std::cout << "\nInvalid input, please input correct value. Returning to menu\n" << std::endl;
                     }
