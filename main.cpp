@@ -15,7 +15,7 @@
 
 int main() {
 
-    //Creating dummy database
+    //Creating dummy student database, and mapping them.
     Student student1("John");
     Student student2("Jane");
     Student student3("Zaza");
@@ -49,6 +49,7 @@ int main() {
             std::cout << std::endl;
             static int check_initial_input = 0;
 
+            //If user presses "1", program will terminate
             if (exit_button == "1") {
                 std::cout << "Session has ended! System is turning off\n\n\n" << std::endl;
                 delete users["principal"];
@@ -68,13 +69,13 @@ int main() {
 
                 while (true) {
 
-                    // If user decides to quit
+                    // If user decides to quit now, he/she can still press "1" to exit the program.
                     if (username == "1") {
                         std::cout << "Session has ended!" << std::endl;
                         return 0;
                     }
 
-                    // Check if the username exists in the map
+                    //Otherwise, we check if the username exists in the map
                     auto it = users.find(username);
 
                     if (it != users.end()) {
@@ -83,6 +84,9 @@ int main() {
                             break;
                     }
                     else {
+                        /*If user does not exist, "failed_attempts_username" variable will increase. 
+                        If the value of this variable reaches 3, program will terminate because of suspicious behavior.
+                        */
                         failed_attempts_username++;
                         std::cout << "Wrong username, please write correct username or press \"1\" to quit: "<< std::endl;
                         if (failed_attempts_username==3){
@@ -103,6 +107,8 @@ int main() {
                 std::cout << "Enter password or press \"1\" to go back to menu \n" << std::endl;
                 std::getline(std::cin,password);
 
+                //This snippet of code checks if password is correct, only after username was proved to be correct.
+                //***
                 do {
                     if (users[username]->failed_attempts_password == 2) {
 
@@ -115,7 +121,7 @@ int main() {
                         std::cout << "Session has ended! Going back to menu...\n" << std::endl;
                         goto initial_menu_label;   //Jump to top, where menu starts
                     }
-
+                //***
 
                     //If login is successful, we get out of the loop and move forward
                     if (users[username]->check_password(password)) {
@@ -131,7 +137,7 @@ int main() {
             }
 
 
-                //Handling initial incorrect input values, if there will be more than 2 incorrect inputs, program will exit
+                //This is where we handleinitial incorrect input values, if there will be more than 2 incorrect inputs, program will exit
             else {
                 check_initial_input++;
                 if (check_initial_input >= 3) {
@@ -165,7 +171,7 @@ int main() {
 
                     std::getline(std::cin, successful_login_input);
 
-
+                    //If principal decides to exit, he/she presses "1", and program will return back to starting menu
                     if (successful_login_input == "1") {
                         std::cout << "Session has ended!\n\n\n" << std::endl;
                         delete principal;
@@ -195,11 +201,15 @@ int main() {
                         std::cout<<std::endl;
                         continue;
 
-                    } else if (successful_login_input == "3") {
+                    } 
+                        
+                    //If principal presses "3", she/he will view the database
+                    else if (successful_login_input == "3") {
                         std::cout << "Viewing database and returning to menu\n" << std::endl;
                         Principal::view_student_database();
                         std::cout << std::endl;
                     }
+                    //All other inputs will be marked as invalid input values, and program will keep asking for correct input.
                     else{
                         std::cout<<"Invalid inputs, please input correct value. Returning to menu..\n";
                     }
@@ -213,7 +223,8 @@ int main() {
             else if (username == "math_teacher") {
 
                 while (true) {
-
+                    
+                    //If math teacher inputs invalid grade, program will jump to this label
                     Invalid_grade_label_math:
 
                     std::cout << "Welcome to the school management system " << users[username]->username << std::endl;
@@ -222,13 +233,13 @@ int main() {
 
 
                     std::getline(std::cin,successful_login_input);
-
-
+                
+                    //Similar to principal, exit button is "1"
                     if (successful_login_input == "1") {
                         std::cout << "Session has ended!\n\n\n" << std::endl;
                         break;
                     }
-
+                    //Pressing "3" will allow math teacher to view database
                     if (successful_login_input == "3") {
                         std::cout << "Viewing database:\n";
                         Math_teacher::view_student_database();
@@ -236,7 +247,7 @@ int main() {
                         std::cout << "Returning to menu\n";
                         continue;
                     }
-
+                    //If math teacher presses "2", she/he will be able to change student's grade, if certain conditions are met.
                     else if (successful_login_input == "2") {
                         auto math_teacher = new Math_teacher("math_teacher","123");
                         std::cout << std::endl;
@@ -261,7 +272,8 @@ int main() {
                         std::getline(std::cin,changed_grade_string);
 
 
-                        //Check if grade is valid. if yes, we convert it to float and call change_math_grade function
+                        //Check if grade is valid (only float numeric values are valid). if yes, we convert it to float and call change_math_grade function
+                        //If invalid, we go back to label
                         int dot_count = 0;
 
                         for (char c : changed_grade_string) {
@@ -276,18 +288,23 @@ int main() {
 
                         changed_grade = std::stof(changed_grade_string);
 
+                        //This variable, "result" is used to determine whether grade will be changed or not, based on output of the function below
+                        //In all cases, we jump back to teacher's window, waiting for his/her further instructions
+                        
                         int result = Math_teacher::change_math_grade(students, ID, changed_grade);
 
+                        //result being "-2", means that there is no matching ID
                         if (result == -2) {
                             std::cout << "\nNo matching ID, returning to menu\n\n";
                             continue;
                         }
 
+                        //If teacher suddenly decides to abord the changing of grade, result will become zero
                         else if (result == 0) {
                             std::cout << "Change aborted, returning to menu" << std::endl;
                             continue;
                         }
-
+                        //If change is made, new database with new data is created, and viewed.
                         else if (result == 1) {
                             std::cout << "\nChange is made, viewing changed database and returning to menu\n\n"<< std::endl;
                             Math_teacher::create_student_database(students);
@@ -295,12 +312,15 @@ int main() {
                             std::cout << std::endl << std::endl;
                             continue;
                         }
-
+                            
+                        //If result is invalid, it means that input was invalid, so nothing is changed and program returns back to teacher's menu
                         else if (result == -1) {
                             std::cout << "\nInvalid input, please input correct value. Returning to menu\n" << std::endl;
                             continue;
                         }
                     }
+
+                        //Initially, if teacher inputs invalid input, nothing happens and program keeps asking him/her for correct input
                     else{
                         std::cout << "\nInvalid input, please input correct value. Returning to menu\n" << std::endl;
                     }
@@ -311,6 +331,7 @@ int main() {
                 /*
                  *If the username is math teacher, program will prompt to press "1" to quit, "2" to change/insert math grade
                  * or press "3" to view database
+                 * Overall, logic is similar as it was with math_teacher, but difference is that english_teacher can change English grade, and not math grade
                  */
 
             else if (username == "english_teacher") {
