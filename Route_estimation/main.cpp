@@ -19,7 +19,7 @@
  */
 
 // The API key for the Google Directions API
-const std::string API_KEY = "AIzaSyDexF3UcqhLCDW0dR-0_Z4Yyfg89ycIku0";
+const std::string API_KEY = "KEY_GOOGLE_MAPS"; // Your Google maps API key
 
 // Callback function for libcurl to write the response data into a string
 size_t WriteCallback(void* contents, size_t size, size_t nmemb, std::string* s) {
